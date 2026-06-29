@@ -25,17 +25,26 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build with Gradle
+    - name: Build Universal APK (supports all architectures)
       run: ./gradlew assembleRelease
 
-    - name: Upload APK to Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: app/build/outputs/apk/release/*.apk
+    - name: Build Architecture-specific APKs
+      run: ./gradlew bundleRelease
 
-    - name: Upload APK as Artifact
+    - name: Upload Universal APK as Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: YouTube-App
+        name: YouTube-App-Universal
+        path: app/build/outputs/apk/release/*universal*.apk
+
+    - name: Upload All APKs as Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: YouTube-App-All-Architectures
         path: app/build/outputs/apk/release/*.apk
+
+    - name: Upload Bundle as Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: YouTube-App-Bundle
+        path: app/build/outputs/bundle/release/*.aab
