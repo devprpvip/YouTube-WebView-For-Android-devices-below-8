@@ -44,17 +44,23 @@ jobs:
       run: |
         echo "=== Java version ==="
         java -version
-        echo "=== Gradle version ==="
-        ./gradlew --version
+        echo "=== Gradle version (system) ==="
+        gradle --version || true
+
+    - name: Install Gradle (if wrapper missing)
+      run: |
+        if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
+          sudo apt-get update && sudo apt-get install -y gradle
+        fi
 
     - name: Grant execute permission for gradlew (Extra safety)
       run: chmod +x gradlew
 
     - name: Clean previous builds
-      run: ./gradlew clean
+      run: gradle clean
 
     - name: Build Release APK
-      run: ./gradlew assembleRelease -x lint
+      run: gradle assembleRelease -x lint
 
     - name: Debug - Check APK output
       run: |

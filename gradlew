@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 #
 # Copyright 2015 the original author or authors.
@@ -44,7 +44,7 @@ APP_NAME="Gradle"
 APP_BASE_NAME=`basename "$0"`
 
 # Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
-DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
+DEFAULT_JVM_OPTS='-Xmx64m -Xms64m'
 
 # Use the maximum available, or set MAX_FD != -1 to use that value.
 MAX_FD="maximum"
@@ -81,7 +81,7 @@ case "`uname`" in
 esac
 
 # For Cygwin or MSYS, switch paths to Windows format before running java
-if [ "$cygwin" = "true" ] -o [ "$msys" = "true" ] ; then
+    if [ "$cygwin" = "true" ] || [ "$msys" = "true" ] ; then
     APP_HOME=`cygpath --path --mixed "$APP_HOME"`
     CLASSPATH=`cygpath --path --mixed "$CLASSPATH"`
 
@@ -101,7 +101,7 @@ APP_ARGS=`save "$@"`
 # Collect all arguments for the java command, stacking in reverse order
 # This is necessary to properly handle both the case where gradle-build-cache is disabled and
 # when it is enabled.
-GRADLE_OPTS="$GRADLE_OPTS \"-Xmx64m\" \"-Xms64m\""
+    GRADLE_OPTS="$GRADLE_OPTS -Xmx64m -Xms64m"
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin ; then
@@ -109,18 +109,21 @@ if $cygwin ; then
 fi
 
 # Increase the maximum file descriptors if we can.
-if [ "$darwin" = "true" -a -z "$JAVA_HOME" ] ; then
-    JAVA_HOME=`/usr/libexec/java_home`
-fi
+    if [ "$darwin" = "true" ] && [ -z "$JAVA_HOME" ] ; then
+        JAVA_HOME=`/usr/libexec/java_home`
+    fi
 
 # For Darwin, add options to specify how the application appears in the dock
-if $darwin; then
-    GRADLE_OPTS="$GRADLE_OPTS \"-Xdock:name=$APP_NAME\" \"-Xdock:icon=$APP_HOME/media/gradle.icns\""
-fi
+    if $darwin; then
+        GRADLE_OPTS="$GRADLE_OPTS -Xdock:name=$APP_NAME -Xdock:icon=$APP_HOME/media/gradle.icns"
+    fi
 
 # For Cygwin, ensure paths are in UNIX format before anything is touched.
-if $cygwin ; then
-    [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
-fi
+    if $cygwin ; then
+        [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+    fi
+
+# Ensure JAVACMD has a sensible default (use `java` from PATH if not set)
+JAVACMD=${JAVACMD:-java}
 
 exec "$JAVACMD" $DEFAULT_JVM_OPTS $GRADLE_OPTS -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"
