@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
         
         // Cache để giảm tải
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setAppCacheEnabled(true);
+        // settings.setAppCacheEnabled(true); // removed for Android 34+ compatibility
         
         // Disable plugins/features không cần
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
