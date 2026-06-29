@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'com.youtube.viewer'
-    compileSdk 33
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.youtube.viewer"
-        minSdk 24
-        targetSdk 33
+        minSdk 19
+        targetSdk 35
         versionCode 1
         versionName "1.0"
         
@@ -39,5 +39,7 @@ android {
 }
 
 dependencies {
-    // Không cần thêm dependency, pure WebView
+    // AndroidX support cho device cũ
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.webkit:webkit:1.6.1'
 }

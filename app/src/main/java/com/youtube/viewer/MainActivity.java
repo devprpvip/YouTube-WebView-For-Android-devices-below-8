@@ -25,7 +25,15 @@ public class MainActivity extends Activity {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
 
+        // Disable hardware acceleration cho device cũ
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setFormat(android.graphics.PixelFormat.TRANSLUCENT);
+        }
+
         webView = findViewById(R.id.webview);
+        
+        // Disable hardware acceleration nếu cần
+        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         
         // Config WebView để tối ưu hiệu năng
         setupWebView();
@@ -44,14 +52,20 @@ public class MainActivity extends Activity {
         // Tối ưu cho máy yếu (Snap 425)
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        
+        // Mixed content - cho phép HTTP trên HTTPS
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         
         // Cache để giảm tải
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setAppCacheEnabled(true);
         
         // Disable plugins/features không cần
-        settings.setPluginState(WebSettings.PluginState.OFF);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            settings.setPluginState(WebSettings.PluginState.OFF);
+        }
         
         // User Agent bình thường
         settings.setUserAgentString("Mozilla/5.0 (Linux; Android 7.1.1; SM-J200G) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Mobile Safari/537.36");
